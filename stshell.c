@@ -123,18 +123,24 @@ int main()
 						int i = 0;
 						for (int k = j + 1; argv[k] != NULL; k++)
 						{
-							if (strcmp(argv[k], ">") == 0 || strcmp(argv[k], ">>") == 0)
+							if (strcmp(argv[k], ">") == 0)
 							{
-								if (strcmp(argv[k], ">") == 0) // out
-								{
-									// argv[k] = NULL;
-									char *text = argv[k + 1];
-									int out = open(text, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-									dup2(out, STDOUT_FILENO);
-									close(out);
-									break;
-								}
-								argv[i] = NULL;
+
+								char *text = argv[k + 1];
+								int out = open(text, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+								dup2(out, STDOUT_FILENO);
+								close(out);
+								break;
+
+								// argv[i] = NULL;
+							}
+							else if (strcmp(argv[k], ">>") == 0)
+							{
+								char *text = argv[k + 1];
+								int outA = open(text, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+								dup2(outA, STDOUT_FILENO);
+								close(outA);
+								break;
 							}
 							else
 							{
